@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import api from '../utils/api'
 import { Link } from 'react-router-dom'
 
 const CourseList = () => {
@@ -14,7 +14,7 @@ const CourseList = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get('/api/courses')
+      const response = await api.get('/courses')
       setCourses(response.data)
       setLoading(false)
     } catch (err) {

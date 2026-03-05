@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../utils/api'
 
 const CourseDetails = () => {
   const { id } = useParams()
@@ -16,17 +16,17 @@ const CourseDetails = () => {
 
   const fetchCourseDetails = async () => {
     try {
-      const courseResponse = await axios.get(`/api/courses/${id}`)
+      const courseResponse = await api.get(`/courses/${id}`)
       setCourse(courseResponse.data)
       
-      const sectionsResponse = await axios.get(`/api/sections/course/${id}`)
+      const sectionsResponse = await api.get(`/sections/course/${id}`)
       setSections(sectionsResponse.data)
       
       // Check if user is enrolled
       const token = localStorage.getItem('token')
       if (token) {
         const userData = JSON.parse(localStorage.getItem('userData'))
-        const enrollmentResponse = await axios.get(`/api/enrollments/check/${userData.id}/${id}`)
+        const enrollmentResponse = await api.get(`/enrollments/check/${userData.id}/${id}`)
         setEnrolled(enrollmentResponse.data.enrolled)
       }
       
@@ -78,7 +78,7 @@ const CourseDetails = () => {
   const handleEnroll = async () => {
     try {
       const userData = JSON.parse(localStorage.getItem('userData'))
-      await axios.post('/api/enrollments', {
+      await api.post('/enrollments', {
         user_id: userData.id,
         course_id: id
       })

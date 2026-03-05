@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import api from './utils/api'
 import CourseList from './components/CourseList'
 import CourseDetails from './components/CourseDetails'
 import LearningPage from './components/LearningPage'
@@ -16,7 +16,7 @@ function App() {
     const userData = localStorage.getItem('userData')
     if (token && userData) {
       setUser(JSON.parse(userData))
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
     }
   }, [])
 
@@ -24,14 +24,14 @@ function App() {
     setUser(userData)
     localStorage.setItem('token', token)
     localStorage.setItem('userData', JSON.stringify(userData))
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
   }
 
   const handleLogout = () => {
     setUser(null)
     localStorage.removeItem('token')
     localStorage.removeItem('userData')
-    delete axios.defaults.headers.common['Authorization']
+    delete api.defaults.headers.common['Authorization']
   }
 
   return (

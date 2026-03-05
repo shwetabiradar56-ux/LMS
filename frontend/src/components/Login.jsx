@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../utils/api'
 
 const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({
@@ -24,7 +24,7 @@ const Login = ({ onLogin }) => {
     setLoading(true)
 
     try {
-      const response = await axios.post('/api/auth/login', formData)
+      const response = await api.post('/auth/login', formData)
       
       if (response.data.token) {
         onLogin(response.data.user, response.data.token)

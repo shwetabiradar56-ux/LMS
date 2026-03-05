@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../utils/api'
 
 const LearningPage = ({ user }) => {
   const { courseId, lessonId } = useParams()
@@ -18,11 +18,11 @@ const LearningPage = ({ user }) => {
   const fetchLearningData = async () => {
     try {
       // Fetch course data
-      const courseResponse = await axios.get(`/api/courses/${courseId}`)
+      const courseResponse = await api.get(`/courses/${courseId}`)
       setCourse(courseResponse.data)
 
       // Fetch sections and lessons
-      const sectionsResponse = await axios.get(`/api/sections/course/${courseId}`)
+      const sectionsResponse = await api.get(`/sections/course/${courseId}`)
       setSections(sectionsResponse.data)
 
       // Find current lesson
@@ -34,7 +34,7 @@ const LearningPage = ({ user }) => {
       setCurrentLesson(foundLesson)
 
       // Fetch user progress
-      const progressResponse = await axios.get(`/api/progress/${user.id}`)
+      const progressResponse = await api.get(`/progress/${user.id}`)
       setProgress(progressResponse.data)
 
       setLoading(false)
@@ -81,7 +81,7 @@ const LearningPage = ({ user }) => {
   const handleVideoEnd = async () => {
     try {
       // Mark lesson as completed
-      await axios.post('/api/progress', {
+      await api.post('/progress', {
         user_id: user.id,
         lesson_id: currentLesson.id,
         completed: true
